@@ -1,0 +1,26 @@
+Started by user [8mha:////4KZPJ07Fpilqt4bFO70gU5ysWp9gRVeviQNCfl3khrdTAAAAlR+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAzmEgZO/dLi1CL9xKRkAGDVhlq+AAAA[0mabc
+Running as SYSTEM
+Building in workspace /var/lib/jenkins/workspace/c-project
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/shobithgowda7/c-project.git
+ > git init /var/lib/jenkins/workspace/c-project # timeout=10
+Fetching upstream changes from https://github.com/shobithgowda7/c-project.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --tags --force --progress -- https://github.com/shobithgowda7/c-project.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/shobithgowda7/c-project.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 004e25618c5fb6f1d85193ce82c1ea0bd71d60f4 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 004e25618c5fb6f1d85193ce82c1ea0bd71d60f4 # timeout=10
+Commit message: "file2 was added"
+First time build. Skipping changelog.
+[c-project] $ /bin/sh -xe /tmp/jenkins9783375236649327772.sh
++ make
+/tmp/jenkins9783375236649327772.sh: 2: make: not found
+Build step 'Execute shell' marked build as failure
+Finished: FAILURE
