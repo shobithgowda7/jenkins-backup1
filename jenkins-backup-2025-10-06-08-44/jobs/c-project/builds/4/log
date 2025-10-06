@@ -1,0 +1,21 @@
+Started by user [8mha:////4KZPJ07Fpilqt4bFO70gU5ysWp9gRVeviQNCfl3khrdTAAAAlR+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAzmEgZO/dLi1CL9xKRkAGDVhlq+AAAA[0mabc
+Running as SYSTEM
+Building in workspace /var/lib/jenkins/workspace/c-project
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/c-project/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/shobithgowda7/c-project.git # timeout=10
+Fetching upstream changes from https://github.com/shobithgowda7/c-project.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --tags --force --progress -- https://github.com/shobithgowda7/c-project.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 004e25618c5fb6f1d85193ce82c1ea0bd71d60f4 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 004e25618c5fb6f1d85193ce82c1ea0bd71d60f4 # timeout=10
+Commit message: "file2 was added"
+ > git rev-list --no-walk 004e25618c5fb6f1d85193ce82c1ea0bd71d60f4 # timeout=10
+[c-project] $ /bin/bash /tmp/jenkins17043289828233545100.sh
+=== Creating backup directory at: /var/lib/jenkins/workspace/c-project/git-backup/jenkins-backup-2025-10-06-08-44 ===
+=== Copying Jenkins data ===

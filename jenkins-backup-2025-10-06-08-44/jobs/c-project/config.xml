@@ -1,0 +1,98 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@5.7.0">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>https://github.com/shobithgowda7/c-project.git</url>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/main</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="empty-list"/>
+    <extensions/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>#!/bin/bash
+set -euo pipefail
+
+# ====== CONFIGURATION ======
+DATE=$(date +%F-%H-%M)
+REPO_DIR=&quot;$WORKSPACE/git-backup&quot;          # Dedicated Git repo folder
+BACKUP_DIR=&quot;$REPO_DIR/jenkins-backup-$DATE&quot;
+JENKINS_HOME=&quot;/var/lib/jenkins&quot;
+BRANCH=&quot;main&quot;
+GIT_USER_NAME=&quot;Jenkins Backup Bot&quot;
+GIT_USER_EMAIL=&quot;jenkins@example.com&quot;
+GIT_REPO=&quot;git@github.com:shobithgowda7/jenkins-backup1.git&quot;
+SSH_KEY=&quot;/var/lib/jenkins/.ssh/jenkins_backup_key&quot;  # Path to your private SSH key
+# ============================
+
+echo &quot;=== Creating backup directory at: $BACKUP_DIR ===&quot;
+mkdir -p &quot;$BACKUP_DIR&quot;
+
+echo &quot;=== Copying Jenkins data ===&quot;
+cp -r &quot;$JENKINS_HOME/jobs&quot; &quot;$BACKUP_DIR/&quot; 2&gt;/dev/null || echo &quot;⚠ jobs directory missing&quot;
+cp -r &quot;$JENKINS_HOME/plugins&quot; &quot;$BACKUP_DIR/&quot; 2&gt;/dev/null || echo &quot;⚠ plugins directory missing&quot;
+cp -r &quot;$JENKINS_HOME/users&quot; &quot;$BACKUP_DIR/&quot; 2&gt;/dev/null || echo &quot;⚠ users directory missing&quot;
+cp &quot;$JENKINS_HOME/config.xml&quot; &quot;$BACKUP_DIR/&quot; 2&gt;/dev/null || echo &quot;⚠ config.xml missing&quot;
+cp &quot;$JENKINS_HOME/credentials.xml&quot; &quot;$BACKUP_DIR/&quot; 2&gt;/dev/null || echo &quot;⚠ credentials.xml missing&quot;
+
+echo &quot;=== Initializing Git repo ===&quot;
+mkdir -p &quot;$REPO_DIR&quot;
+cd &quot;$REPO_DIR&quot;
+
+if [ ! -d &quot;.git&quot; ]; then
+    git init
+    git remote add origin &quot;$GIT_REPO&quot;
+    git checkout -b &quot;$BRANCH&quot;
+else
+    git fetch origin &quot;$BRANCH&quot; || echo &quot;⚠ Failed to fetch branch, continuing...&quot;
+    git checkout &quot;$BRANCH&quot; || git checkout -b &quot;$BRANCH&quot;
+    git pull --rebase origin &quot;$BRANCH&quot; || echo &quot;⚠ Nothing to rebase&quot;
+fi
+
+git config user.name &quot;$GIT_USER_NAME&quot;
+git config user.email &quot;$GIT_USER_EMAIL&quot;
+
+echo &quot;=== Copying backup into repo ===&quot;
+rm -rf &quot;$REPO_DIR/jenkins-backup-*&quot;
+cp -r &quot;$BACKUP_DIR&quot;/* &quot;$REPO_DIR/&quot;
+
+echo &quot;=== Adding and committing backup ===&quot;
+git add .
+git commit -m &quot;Jenkins Backup on $DATE&quot; || echo &quot;⚠ Nothing to commit&quot;
+
+echo &quot;=== Pushing to GitHub via SSH agent ===&quot;
+# Start ssh-agent and add key temporarily
+eval &quot;$(ssh-agent -s)&quot;
+ssh-add &quot;$SSH_KEY&quot;
+
+# Push backup
+git push origin &quot;$BRANCH&quot; || git push --force origin &quot;$BRANCH&quot;
+
+# Kill ssh-agent
+ssh-agent -k
+
+echo &quot;✅ Backup completed and pushed to GitHub.&quot;</command>
+      <configuredLocalRules/>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
